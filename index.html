@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="年収、1日の労働時間、年間休日から、あなたの時給と日当を簡単に計算します。"
+    />
+    <title>年収→時給変換器｜俺の時給、いくらなん？</title>
+  </head>
+  <body>
+    <main class="page-container">
+      <section class="calculator-card" aria-labelledby="app-title">
+        <header class="app-header">
+          <!-- タイトルとサブタイトルはここで簡単に変更できます。 -->
+          <div class="app-mark" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="2.75" width="16" height="18.5" rx="3"></rect>
+              <path d="M8 7.5h8M8 12h1M12 12h1M16 12h.01M8 16.5h1M12 16.5h1M16 16.5h.01"></path>
+            </svg>
+          </div>
+          <p class="eyebrow">WORK VALUE CALCULATOR</p>
+          <h1 id="app-title">年収→時給変換器</h1>
+          <p class="app-subtitle">あなたの時給と日給を計算します</p>
+        </header>
+
+        <form id="calculator-form" novalidate>
+          <div class="field-group">
+            <label for="annual-income"><span class="label-icon label-icon-income" aria-hidden="true">¥</span>年収</label>
+            <div class="input-with-unit">
+              <input
+                id="annual-income"
+                name="annualIncome"
+                type="number"
+                inputmode="numeric"
+                min="1"
+                step="1"
+                placeholder="400"
+                aria-describedby="annual-income-error"
+              />
+              <span aria-hidden="true">万円</span>
+            </div>
+            <p class="field-error" id="annual-income-error" aria-live="polite"></p>
+          </div>
+
+          <div class="field-group">
+            <label for="daily-working-hours"><span class="label-icon label-icon-time" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7v5l3.5 2"></path></svg></span>1日の労働時間（残業込み）</label>
+            <div class="input-with-unit">
+              <input
+                id="daily-working-hours"
+                name="dailyWorkingHours"
+                type="number"
+                inputmode="decimal"
+                min="0.1"
+                max="24"
+                step="0.1"
+                placeholder="8"
+                aria-describedby="daily-working-hours-error"
+              />
+              <span aria-hidden="true">時間</span>
+            </div>
+            <p class="field-error" id="daily-working-hours-error" aria-live="polite"></p>
+          </div>
+
+          <fieldset class="holiday-fieldset">
+            <legend><span class="label-icon label-icon-holiday" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14" rx="2"></rect><path d="M8 3.5v4M16 3.5v4M4 10h16M8 14h.01M12 14h.01M16 14h.01"></path></svg></span>休日の入力方法</legend>
+            <div class="mode-switch" role="radiogroup" aria-label="休日の入力方法">
+              <label class="mode-option">
+                <input type="radio" name="holidayMode" value="annual" checked />
+                <span>年間休日から計算</span>
+              </label>
+              <label class="mode-option">
+                <input type="radio" name="holidayMode" value="weekly" />
+                <span>週の休日日数から計算</span>
+              </label>
+            </div>
+
+            <div class="holiday-input" id="annual-holiday-field">
+              <label for="annual-holidays">年間休日</label>
+              <div class="input-with-unit">
+                <input
+                  id="annual-holidays"
+                  name="annualHolidays"
+                  type="number"
+                  inputmode="numeric"
+                  min="0"
+                  max="364"
+                  step="1"
+                  value="120"
+                  aria-describedby="holidays-error"
+                />
+                <span aria-hidden="true">日</span>
+              </div>
+            </div>
+
+            <div class="holiday-input is-hidden" id="weekly-holiday-field">
+              <label for="weekly-holidays">週の休日日数</label>
+              <div class="input-with-unit">
+                <input
+                  id="weekly-holidays"
+                  name="weeklyHolidays"
+                  type="number"
+                  inputmode="numeric"
+                  min="0"
+                  max="7"
+                  step="1"
+                  value="2"
+                  disabled
+                  aria-describedby="holidays-error"
+                />
+                <span aria-hidden="true">日</span>
+              </div>
+            </div>
+            <p class="field-error" id="holidays-error" aria-live="polite"></p>
+          </fieldset>
+
+          <button type="submit"><span>計算する</span><svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+        </form>
+
+        <section id="result" class="result is-hidden" aria-live="polite" aria-labelledby="result-heading">
+          <h2 id="result-heading" class="visually-hidden">計算結果</h2>
+          <div class="result-item">
+            <p><span class="result-icon result-icon-hour" aria-hidden="true">H</span>あなたの時給</p>
+            <output id="hourly-wage">約 0円</output>
+          </div>
+          <div class="result-item">
+            <p><span class="result-icon result-icon-day" aria-hidden="true">D</span>あなたの日当</p>
+            <output id="daily-wage">約 0円</output>
+          </div>
+          <p class="notice">※年収を年間の労働時間・勤務日数から単純計算した概算値です。</p>
+          <p id="weekly-notice" class="notice is-hidden">※週の休日日数から年間休日を概算しています。祝日・年末年始などは考慮していません。</p>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
